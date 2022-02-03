@@ -35,25 +35,41 @@ namespace LoggingKata
 
             // TODO: Create two `ITrackable` variables with initial values of `null`. These will be used to store your two taco bells that are the farthest from each other.
             // Create a `double` variable to store the distance
+            ITrackable TB1 = null;
+            ITrackable TB2 = null;
+            double distance = 0;
 
             // Include the Geolocation toolbox, so you can compare locations: `using GeoCoordinatePortable;`
 
             //HINT NESTED LOOPS SECTION---------------------
             // Do a loop for your locations to grab each location as the origin (perhaps: `locA`)
+            foreach (var loc in locations)
+            {
+                var locA = loc;
+                // Create a new corA Coordinate with your locA's lat and long
+                var corA = new GeoCoordinate(locA.Location.Latitude, locA.Location.Longitude);
+                // Now, do another loop on the locations with the scope of your first loop, so you can grab the "destination" location (perhaps: `locB`)
+                foreach (var loca in locations)
+                {
+                    var locB = loca;
+                    // Create a new Coordinate with your locB's lat and long
+                    var corB = new GeoCoordinate(locB.Location.Latitude, locB.Location.Longitude);
+                    // Now, compare the two using `.GetDistanceTo()`, which returns a double
+                    if(corA.GetDistanceTo(corB) > distance)
+                    {
+                        TB1 = locA;
+                        TB2 = locB;
+                        distance = corA.GetDistanceTo(corB);
+                    }
+                    // If the distance is greater than the currently saved distance, update the distance and the two `ITrackable` variables you set above
 
-            // Create a new corA Coordinate with your locA's lat and long
+                    // Once you've looped through everything, you've found the two Taco Bells farthest away from each other.
+                }
 
-            // Now, do another loop on the locations with the scope of your first loop, so you can grab the "destination" location (perhaps: `locB`)
-
-            // Create a new Coordinate with your locB's lat and long
-
-            // Now, compare the two using `.GetDistanceTo()`, which returns a double
-            // If the distance is greater than the currently saved distance, update the distance and the two `ITrackable` variables you set above
-
-            // Once you've looped through everything, you've found the two Taco Bells farthest away from each other.
+            }
 
 
-            
+            Console.WriteLine($"{TB1.Name} and {TB2.Name}");
         }
     }
 }
